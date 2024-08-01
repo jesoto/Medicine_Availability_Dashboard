@@ -56,6 +56,15 @@ with st.sidebar:
 
 
 # Donut chart
+def assign_color(idm_value):
+    if idm_value >= 90:
+        return ['#27AE60', '#12783D']  # Verde
+    elif idm_value >= 70:
+        return ['#F39C12', '#875A12']  # Amarillo
+    elif idm_value >= 50:
+        return ['#E67E22', '#B35418']  # Naranja
+    else:
+        return ['#E74C3C', '#781F16']  # Rojo
 
 def make_donut(idm_value, departamento):
     chart_color = assign_color(idm_value)
@@ -101,8 +110,50 @@ def calculate_idm_by_depart_year(input_df, input_year, input_depart):
         return selected_IDM_depart_year[0]
     else:
         return None
+###################################
+
+# Loading all the data
+
+#IDM col 0
+idm_anual_data = pd.read_excel('data/IDM_anual.xlsx')
+idm_anual_hosp = pd.read_excel('data/IDM_anual_hospitales.xlsx')
+idm_anual_cen = pd.read_excel('data/IDM_anual_centros.xlsx')
+idm_anual_pue = pd.read_excel('data/IDM_anual_puestos.xlsx')
+
+
+
+
+
 
 ####################################
 # Dashboard Main Panel
 col = st.columns((1.5,4.5,2), gap='medium')
 
+with col[0]:
+    st.markdown('#### IDM Anual Departamental')
+    
+    IDM_anual = calculate_idm_by_depart_year(idm_anual_data,selected_year, selected_depart)
+    IDM_anual_hosp = calculate_idm_by_depart_year(idm_anual_hosp, selected_year, selected_depart)
+    IDM_anual_cen = calculate_idm_by_depart_year(idm_anual_cen, selected_year, selected_depart)
+    IDM_anual_pue = calculate_idm_by_depart_year(idm_anual_pue, selected_year, selected_depart)
+
+    
+    
+    
+    idm_donut_total_chart = make_donut(IDM_anual,selected_depart)
+    idm_donut_hosp_chart = make_donut(IDM_anual_hosp,selected_depart)
+    idm_donut_cen_chart = make_donut(IDM_anual_cen,selected_depart)
+    idm_donut_pue_chart = make_donut(IDM_anual_pue,selected_depart)
+    
+    
+    st.write('IDM Anual Total')
+    st.altair_chart(idm_donut_total_chart, use_container_width=True)
+    
+    st.write('IDM Anual Total - Hospitales')
+    st.altair_chart(idm_donut_hosp_chart, use_container_width=True)
+    
+    st.write('IDM Anual Total - Centros')
+    st.altair_chart(idm_donut_cen_chart, use_container_width=True)
+    
+    st.write('IDM Anual Total - Puestos')
+    st.altair_chart(idm_donut_pue_chart, use_container_width=True)
