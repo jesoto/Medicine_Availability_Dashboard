@@ -6,7 +6,7 @@ import folium
 import altair as alt
 import plotly.express as px 
 import numpy as np
-
+from folium import Popup
 #################################
 
 st.set_page_config(
