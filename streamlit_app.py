@@ -5,6 +5,7 @@ import pandas as pd
 import geopandas as gpd
 import folium
 from streamlit_folium import st_folium
+import altair as alt
 
 #################################
 
