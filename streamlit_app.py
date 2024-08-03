@@ -6,7 +6,7 @@ import geopandas as gpd
 import folium
 from streamlit_folium import st_folium
 import altair as alt
-
+import referencing.jsonschema
 #################################
 
 st.set_page_config(
@@ -63,8 +63,8 @@ def make_donut(idm_value, departamento):
     })
     
     plot = alt.Chart(source).mark_arc(innerRadius=45, cornerRadius=25).encode(
-        theta="% value",
-        color= alt.Color("Topic:N",
+        theta=alt.Theta("% value", type="quantitative"),
+        color=alt.Color("Topic:N",
                         scale=alt.Scale(
                             domain=[departamento, ''],
                             range=chart_color),
@@ -76,8 +76,8 @@ def make_donut(idm_value, departamento):
     )
     
     plot_bg = alt.Chart(source_bg).mark_arc(innerRadius=45, cornerRadius=20).encode(
-        theta="% value",
-        color= alt.Color("Topic:N",
+        theta=alt.Theta("% value", type="quantitative"),
+        color=alt.Color("Topic:N",
                         scale=alt.Scale(
                             domain=[departamento, ''],
                             range=chart_color),
